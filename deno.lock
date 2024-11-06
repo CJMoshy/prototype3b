@@ -1,0 +1,22 @@
+{
+  "version": "4",
+  "specifiers": {
+    "npm:phaser@^3.86.0": "3.86.0"
+  },
+  "npm": {
+    "eventemitter3@5.0.1": {
+      "integrity": "sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA=="
+    },
+    "phaser@3.86.0": {
+      "integrity": "sha512-A7rog3GhXYcWsPimteQmudyY6W0fx0eviOoo9Cwpzae1RPeJBDkhmWv5IFrQO9dL+T907E4dprQPnd2D4WhoEw==",
+      "dependencies": [
+        "eventemitter3"
+      ]
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:phaser@^3.86.0"
+    ]
+  }
+}
