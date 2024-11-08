@@ -55,6 +55,7 @@ export default class Load extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+
   }
   create() {
     this.anims.create({

@@ -24,7 +24,7 @@ export default class Play extends Phaser.Scene {
     this.playerAura = "none";
     this.auraToObstacle = new Map([
       ["roids", "spikes"],
-      ["coat", "cold"],
+      ["sweater", "cold"],
       ["sick-cat", "vet"],
       ["milk-bone", "squirrel"],
     ]);
