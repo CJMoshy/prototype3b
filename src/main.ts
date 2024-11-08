@@ -1,4 +1,5 @@
 import Load from "./scenes/Load.ts";
+import Menu from "./scenes/Menu.ts";
 import Play from "./scenes/Play.ts";
 import Phaser from "phaser";
 
@@ -17,7 +18,7 @@ const GAME_CONFIG = {
       // debug: true,
     },
   },
-  scene: [Load, Play],
+  scene: [Load, Menu, Play],
 };
 
 document.addEventListener(

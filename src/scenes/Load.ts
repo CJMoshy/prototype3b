@@ -19,7 +19,7 @@ import squirrel from "../../assets/obstacles/squirrel.png";
 import vet from "../../assets/obstacles/vet.png";
 import warning from "../../assets/obstacles/warning.png";
 import necroReborn from "../../assets/Doggy/necroReborn.png";
-
+import blue from '../../assets/Blue.png'
 import Phaser from "phaser";
 
 export default class Load extends Phaser.Scene {
@@ -50,6 +50,7 @@ export default class Load extends Phaser.Scene {
     this.load.image("vet", vet);
     this.load.image("warning", warning);
 
+    this.load.image('blue', blue)
     this.load.spritesheet("necroDog-run", necroReborn, {
       frameWidth: 64,
       frameHeight: 64,
@@ -66,6 +67,6 @@ export default class Load extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.scene.start("playScene");
+    this.scene.start("menuScene");
   }
 }
