@@ -2,9 +2,9 @@ import Phaser from "phaser";
 
 type aura = "roids" | "milk-bone" | "sick-cat" | "sweater" | "none";
 type obstacle = "spikes" | "vet" | "cold" | "squirrel" | "none";
-interface keything{
-    keycode: string,
-    key: Phaser.Input.Keyboard.Key
+interface keything {
+  keycode: string;
+  key: Phaser.Input.Keyboard.Key;
 }
 export default class Play extends Phaser.Scene {
   private tileSprites: Map<number, Phaser.GameObjects.TileSprite>;
@@ -15,8 +15,8 @@ export default class Play extends Phaser.Scene {
   private playerReactionDelay: number;
   private keys!: keything[];
   private playerHealth: number;
-  private healthText!: Phaser.GameObjects.Text
-  private auraText!: Phaser.GameObjects.Text
+  private healthText!: Phaser.GameObjects.Text;
+  private auraText!: Phaser.GameObjects.Text;
   constructor() {
     super({ key: "playScene" });
     this.tileSprites = new Map();
@@ -30,37 +30,37 @@ export default class Play extends Phaser.Scene {
     ]);
     this.currentObstacle = ["none", undefined];
     this.playerReactionDelay = 1500; // time in ms for player to react to incoming obstacles
-    this.playerHealth = 3
+    this.playerHealth = 3;
   }
 
   init() {}
   preload() {}
   create() {
     this.keys = [
-        {keycode: 'one',key: this.input.keyboard?.addKey('ONE')!},
-        {keycode: 'two', key: this.input.keyboard?.addKey('TWO')!},
-        {keycode: 'three',key:  this.input.keyboard?.addKey('THREE')!},
-        {keycode: 'four', key: this.input.keyboard?.addKey('FOUR')!}
-    ]
-    
-    for(const x of this.keys){
-        x.key.on('down', () => {
-            switch(x.keycode){
-                case 'one':
-                    this.playerAura = 'roids'
-                    break
-                case 'two':
-                    this.playerAura = 'milk-bone'
-                    break;
-                case 'three':
-                     this.playerAura = 'sick-cat'
-                    break
-                case 'four':
-                    this.playerAura = 'sweater'
-                    break;
-            }
-            this.auraText.text = this.playerAura
-        })
+      { keycode: "one", key: this.input.keyboard?.addKey("ONE")! },
+      { keycode: "two", key: this.input.keyboard?.addKey("TWO")! },
+      { keycode: "three", key: this.input.keyboard?.addKey("THREE")! },
+      { keycode: "four", key: this.input.keyboard?.addKey("FOUR")! },
+    ];
+
+    for (const x of this.keys) {
+      x.key.on("down", () => {
+        switch (x.keycode) {
+          case "one":
+            this.playerAura = "roids";
+            break;
+          case "two":
+            this.playerAura = "milk-bone";
+            break;
+          case "three":
+            this.playerAura = "sick-cat";
+            break;
+          case "four":
+            this.playerAura = "sweater";
+            break;
+        }
+        this.auraText.text = this.playerAura;
+      });
     }
 
     //spawn background
@@ -77,32 +77,29 @@ export default class Play extends Phaser.Scene {
     this.add.sprite(width as number / 2 + 35, 40, "sickCat").setScale(0.5);
     this.add.sprite(width as number / 2 + 105, 40, "coat").setScale(0.5);
 
-
     //spawn dog
     this.add.sprite(120, 275, "necroDog-run", 0).setScale(2).anims.play(
       "necroDog-run-anim",
     );
 
- 
-    this.healthText = this.add.text(120, 100, '❤️❤️❤️' )
-    this.auraText = this.add.text(120, 120, this.playerAura )
+    this.healthText = this.add.text(120, 100, "❤️❤️❤️");
+    this.auraText = this.add.text(120, 120, this.playerAura);
 
     this.events.addListener("checkPlayer", () => {
       if (
         this.auraToObstacle.get(this.playerAura) === this.currentObstacle[0]
       ) {
         // SAFE
-        console.log('safe')
+        console.log("safe");
       } else {
         // fucked
-        console.log('fucked')
-        this.playerHealth -= 1
-        this.healthText.text = this.determineHearts()
-        
+        console.log("fucked");
+        this.playerHealth -= 1;
+        this.healthText.text = this.determineHearts();
       }
-      if(this.playerHealth === 0){
-        console.log('NTNT')
-        this.scene.start('menuScene')
+      if (this.playerHealth === 0) {
+        console.log("NTNT");
+        this.scene.start("menuScene");
       }
       // maybe delay
       this.currentObstacle[1]?.destroy();
@@ -118,12 +115,12 @@ export default class Play extends Phaser.Scene {
     this.updateTilespriteSpeed();
   }
 
-  determineHearts(){
-    let result = ''
-    for(let x = 0; x < this.playerHealth; x++){
-        result += '❤️'
+  determineHearts() {
+    let result = "";
+    for (let x = 0; x < this.playerHealth; x++) {
+      result += "❤️";
     }
-    return result
+    return result;
   }
 
   delayWarningObstacle() {
@@ -134,12 +131,12 @@ export default class Play extends Phaser.Scene {
     );
     // tween
     this.add.tween({
-        targets: destroyME,
-        alpha: { from: 1, to: 0.0 },
-        ease: 'Sine.InOut',
-        duration: 250,
-        repeat: -1,
-        yoyo: true,
+      targets: destroyME,
+      alpha: { from: 1, to: 0.0 },
+      ease: "Sine.InOut",
+      duration: 250,
+      repeat: -1,
+      yoyo: true,
     });
 
     this.time.addEvent({
