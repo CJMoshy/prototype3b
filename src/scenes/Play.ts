@@ -82,6 +82,9 @@ export default class Play extends Phaser.Scene {
       "necroDog-run-anim",
     );
 
+    //add in the person 
+    this.add.sprite(100, 200, "person-run", 0).setScale(2.2).anims.play("person-run-anim");
+
     this.healthText = this.add.text(120, 100, "❤️❤️❤️");
     this.auraText = this.add.text(120, 120, this.playerAura);
 
