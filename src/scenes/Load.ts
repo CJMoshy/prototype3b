@@ -20,6 +20,10 @@ import vet from "../../assets/obstacles/vet.png";
 import warning from "../../assets/obstacles/warning.png";
 import necroReborn from "../../assets/Doggy/necroReborn.png";
 import blue from "../../assets/Blue.png";
+import person from "../../assets/Person/PersonRun.png";
+import PersonAtlas from "../../assets/Person/PersonRun.json" with {
+  type: 'json',
+}
 import Phaser from "phaser";
 
 export default class Load extends Phaser.Scene {
@@ -56,6 +60,7 @@ export default class Load extends Phaser.Scene {
       frameHeight: 64,
     });
 
+    this.load.atlas("person-run", person, PersonAtlas);
   }
   create() {
     this.anims.create({
@@ -67,6 +72,18 @@ export default class Load extends Phaser.Scene {
       frameRate: 15,
       repeat: -1,
     });
+
+    this.anims.create({
+      key: "person-run-anim",
+      frames: this.anims.generateFrameNames("person-run", {
+        prefix: "Run",
+        start: 1,
+        end: 4,
+      }),
+      frameRate: 8,
+      repeat: -1,
+    });
+
 
     this.scene.start("menuScene");
   }
