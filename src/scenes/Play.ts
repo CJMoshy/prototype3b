@@ -14,7 +14,7 @@ export default class Play extends Phaser.Scene {
   private currentObstacle: [obstacle, Phaser.Physics.Arcade.Sprite | undefined];
   private playerReactionDelay: number;
   private keys!: keything[];
-  private playerHealth: number;
+  private playerHealth!: number;
   private healthText!: Phaser.GameObjects.Text;
   private auraText!: Phaser.GameObjects.Text;
   constructor() {
@@ -30,12 +30,16 @@ export default class Play extends Phaser.Scene {
     ]);
     this.currentObstacle = ["none", undefined];
     this.playerReactionDelay = 1500; // time in ms for player to react to incoming obstacles
-    this.playerHealth = 3;
   }
 
   init() {}
   preload() {}
   create() {
+
+    this.sys.events.once('shutdown', this.shutdown, this);
+
+    this.playerHealth = 3;
+
     this.keys = [
       { keycode: "one", key: this.input.keyboard?.addKey("ONE")! },
       { keycode: "two", key: this.input.keyboard?.addKey("TWO")! },
@@ -89,25 +93,29 @@ export default class Play extends Phaser.Scene {
     this.auraText = this.add.text(120, 120, this.playerAura);
 
     this.events.addListener("checkPlayer", () => {
+      console.log('catch')
       if (
         this.auraToObstacle.get(this.playerAura) === this.currentObstacle[0]
       ) {
         // SAFE
-        console.log("safe");
+        // console.log("safe");
       } else {
         // fucked
-        console.log("fucked");
+        // console.log("fucked");
+        console.log('decrmementing playerhealth', this.playerHealth)
         this.playerHealth -= 1;
         this.healthText.text = this.determineHearts();
       }
       if (this.playerHealth === 0) {
-        console.log("NTNT");
+        this.scene.stop(this);
+        this.events.removeListener('checkPlayer')
         this.scene.start("menuScene");
+      } else {
+           // maybe delay
+        this.currentObstacle[1]?.destroy();
+        this.currentObstacle[1] = undefined;
+        this.delayWarningObstacle();
       }
-      // maybe delay
-      this.currentObstacle[1]?.destroy();
-      this.currentObstacle[1] = undefined;
-      this.delayWarningObstacle();
     });
 
     this.delayWarningObstacle();
@@ -118,6 +126,11 @@ export default class Play extends Phaser.Scene {
     this.updateTilespriteSpeed();
   }
 
+  shutdown() {
+    // Clear all timer events when shutting down the scene
+    this.time.clearPendingEvents();
+    this.time.removeAllEvents();
+}
   determineHearts() {
     let result = "";
     for (let x = 0; x < this.playerHealth; x++) {
@@ -187,10 +200,12 @@ export default class Play extends Phaser.Scene {
       this.currentObstacle[0],
     ).setVelocityX(-400);
 
+    console.log('making enemy')
     //create
     this.time.addEvent({
       delay: this.playerReactionDelay, // this is the time the player has to react before they could lose/win
       callback: () => {
+        console.log('emit')
         this.events.emit("checkPlayer");
       },
     });
