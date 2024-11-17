@@ -35,8 +35,7 @@ export default class Play extends Phaser.Scene {
   init() {}
   preload() {}
   create() {
-
-    this.sys.events.once('shutdown', this.shutdown, this);
+    this.sys.events.once("shutdown", this.shutdown, this);
 
     this.playerHealth = 3;
 
@@ -86,32 +85,26 @@ export default class Play extends Phaser.Scene {
       "necroDog-run-anim",
     );
 
-    //add in the person 
-    this.add.sprite(100, 200, "person-run", 0).setScale(2.2).anims.play("person-run-anim");
+    //add in the person
+    this.add.sprite(100, 200, "person-run", 0).setScale(2.2).anims.play(
+      "person-run-anim",
+    );
 
     this.healthText = this.add.text(120, 100, "❤️❤️❤️");
     this.auraText = this.add.text(120, 120, this.playerAura);
 
     this.events.addListener("checkPlayer", () => {
-      console.log('catch')
       if (
-        this.auraToObstacle.get(this.playerAura) === this.currentObstacle[0]
+        this.auraToObstacle.get(this.playerAura) !== this.currentObstacle[0]
       ) {
-        // SAFE
-        // console.log("safe");
-      } else {
-        // fucked
-        // console.log("fucked");
-        console.log('decrmementing playerhealth', this.playerHealth)
         this.playerHealth -= 1;
         this.healthText.text = this.determineHearts();
       }
       if (this.playerHealth === 0) {
         this.scene.stop(this);
-        this.events.removeListener('checkPlayer')
         this.scene.start("menuScene");
       } else {
-           // maybe delay
+        // maybe delay
         this.currentObstacle[1]?.destroy();
         this.currentObstacle[1] = undefined;
         this.delayWarningObstacle();
@@ -121,7 +114,7 @@ export default class Play extends Phaser.Scene {
     this.delayWarningObstacle();
   }
 
-  // deno-ignore-next-line no-unused-vars
+  // deno-lint-ignore no-unused-vars
   override update(time: number, delta: number): void {
     this.updateTilespriteSpeed();
   }
@@ -130,7 +123,9 @@ export default class Play extends Phaser.Scene {
     // Clear all timer events when shutting down the scene
     this.time.clearPendingEvents();
     this.time.removeAllEvents();
-}
+    // remove any event
+    this.events.removeListener("checkPlayer");
+  }
   determineHearts() {
     let result = "";
     for (let x = 0; x < this.playerHealth; x++) {
@@ -188,24 +183,19 @@ export default class Play extends Phaser.Scene {
   }
 
   spawnObstacle() {
-    // console.log('spawn obstacle')
     const obstacles: obstacle[] = ["cold", "spikes", "squirrel", "vet"];
     this.currentObstacle[0] =
       obstacles[Phaser.Math.Between(0, obstacles.length - 1)];
-    console.log(this.currentObstacle);
     // add sprite
     this.currentObstacle[1] = this.physics.add.sprite(
       this.game.config.width as number + 100,
       275,
       this.currentObstacle[0],
     ).setVelocityX(-400);
-
-    console.log('making enemy')
     //create
     this.time.addEvent({
       delay: this.playerReactionDelay, // this is the time the player has to react before they could lose/win
       callback: () => {
-        console.log('emit')
         this.events.emit("checkPlayer");
       },
     });

@@ -2,12 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <link rel="stylesheet" href="./src/style.css">
+    <title>Necrodog, Reborn</title>
   </head>
   <body>
     <div id="phaser-game"></div>
+    <div class="info-container">
+      <h2>Use keys 1-4 to apply an aura to Necrodog</h2>
+      <h3 style="border-bottom: 2px solid black; margin-left: 5px; margin-right: 5px;">Apply the correct aura before collision with incoming obstacle</h3>
+      <div class="controls-container">
+        <p>Press 1 for 'roids'</p>
+        <p>Press 2 for 'milk bone'</p>
+        <p>Press 3 for 'sickly cat'</p>
+        <p>Press 4 for 'winter jacket'</p>
+      </div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

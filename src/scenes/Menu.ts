@@ -21,13 +21,18 @@ export default class Menu extends Phaser.Scene {
       "NECRODOG, REBORN",
       { color: "black", fontSize: 30 },
     ).setOrigin(0.5);
-    this.add.text(width as number / 2, height as number / 2 + 120, "START", {
+    this.add.text(width as number / 2 - 50, height as number / 2 + 120, "START", {
       color: "black",
     }).setOrigin(0.5).setInteractive().on(
       "pointerdown",
       () => this.scene.start("playScene"),
     );
-    console.log("hello from the meny!");
+    this.add.text(width as number / 2 + 50, height as number / 2 + 120, "CREDITS", {
+      color: "black",
+    }).setOrigin(0.5).setInteractive().on(
+      "pointerdown",
+      () => this.scene.start("creditScene"),
+    );
   }
   override update(time: number, delta: number): void {
     this.ts.tilePositionX += 0.5;
